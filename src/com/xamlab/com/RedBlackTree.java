@@ -17,15 +17,28 @@ public class RedBlackTree {
     //Printing Red-Black Tree traveling by height
     public void printTree(Node node) {
         if (node == nil) return;
-        String color = node.getColor() == BLACK ? "Color:BLACK" : "Color:RED";
-        String key = String.format("Key:%s", node.getKey());
-        String left = node.getLeft() == nil ? "Left:NIL" : String.format("Left:%s", node.left.getKey());
-        String right = node.getRight() == nil ? "Right:NIL" : String.format("Right:%s", node.right.getKey());
-        String parent = String.format("Parent:%s", node.getParent().getKey());
-
-        System.out.print(key + " " + color + " " + left + " " + right + " " + parent + "\n");
+        node.printNodeProperties();
         printTree(node.left);
         printTree(node.right);
+    }
+
+
+
+    //Finding Node
+    //returns null if there is no node  by key
+    public Node findNode(int key, Node node) {
+        if (this.root == null) return null;
+        if (key < node.getKey()) {
+            if (node.getLeft() != nil) return findNode(key, node.left);
+        } else if (key > node.getKey()) {
+            if (node.getRight() != nil) return findNode(key, node.right);
+        } else if (key == node.getKey()) {
+            return node;
+        }
+        System.out.print(String.format("There is no  node by Key:%s", key));
+        return null;
+
+
     }
 
 

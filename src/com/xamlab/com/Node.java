@@ -69,12 +69,21 @@ public class Node {
         this.color = BLACK;
     }
 
-    public Node(int key, Node left, Node right,Node parent, int color) {
+    public Node(int key, Node left, Node right, Node parent, int color) {
         this.key = key;
         this.left = left;
         this.right = right;
-        this.parent=parent;
+        this.parent = parent;
         this.color = color;
+    }
+
+    public void printNodeProperties() {
+        String color = this.color == BLACK ? "Color:BLACK" : "Color:RED";
+        String key = String.format("Key:%s", this.key);
+        String left = this.left == nil ? "Left:NIL" : String.format("Left:%s", this.left.key);
+        String right = this.right == nil ? "Right:NIL" : String.format("Right:%s", this.right.key);
+        String parent = String.format("Parent:%s", this.parent.key);
+        System.out.print(key + " " + color + " " + left + " " + right + " " + parent + "\n");
     }
 
 

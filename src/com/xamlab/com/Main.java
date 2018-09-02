@@ -13,7 +13,17 @@ public class Main {
         node.setRight(node2);
 
         RedBlackTree tree = new RedBlackTree(node);
+
+
         tree.printTree(tree.root);
+
+        System.out.println();
+        System.out.println();
+        Node res=tree.findNode(7, tree.root);
+        if(res!=null){
+            res.printNodeProperties();
+        }
+
 
     }
 }
