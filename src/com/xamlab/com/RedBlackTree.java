@@ -60,6 +60,8 @@ public class RedBlackTree {
             Node left = root.getLeft();
             root.setLeft(root.getLeft().getRight());
             left.getRight().setParent(root);
+            root.setParent(left);
+            left.setRight(root);
             left.setParent(nil);
             root = left;
         }
