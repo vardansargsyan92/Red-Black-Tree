@@ -18,10 +18,9 @@ public class RedBlackTree {
     public void printTree(Node node) {
         if (node == nil) return;
         node.printNodeProperties();
-        printTree(node.left);
-        printTree(node.right);
+        printTree(node.getLeft());
+        printTree(node.getRight());
     }
-
 
 
     //Finding Node
@@ -29,9 +28,9 @@ public class RedBlackTree {
     public Node findNode(int key, Node node) {
         if (this.root == null) return null;
         if (key < node.getKey()) {
-            if (node.getLeft() != nil) return findNode(key, node.left);
+            if (node.getLeft() != nil) return findNode(key, node.getLeft());
         } else if (key > node.getKey()) {
-            if (node.getRight() != nil) return findNode(key, node.right);
+            if (node.getRight() != nil) return findNode(key, node.getRight());
         } else if (key == node.getKey()) {
             return node;
         }
@@ -39,6 +38,31 @@ public class RedBlackTree {
         return null;
 
 
+    }
+
+    //Right Rotation
+    //We have two cases
+    // 1. when we rotate  root node
+    // 2. when we  rotate internal node
+    public void rotateRight(Node node) {
+        //case 2
+        if (node.getParent() != nil) {
+            if (node == node.getParent().getLeft()) {
+                node.getParent().setLeft(node.getLeft());
+            } else {
+                node.getParent().setRight(node.getLeft());
+            }
+            node.getLeft().getParent().setParent(node.getParent());
+            node.setParent(node.getLeft());
+        } else
+        //case 1
+        {
+            Node left = root.getLeft();
+            root.setLeft(root.getLeft().getRight());
+            left.getRight().setParent(root);
+            left.setParent(nil);
+            root = left;
+        }
     }
 
 

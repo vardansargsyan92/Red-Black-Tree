@@ -16,7 +16,7 @@ public class Node {
     }
 
     //Left child node
-    Node left;
+    private Node left;
 
     public Node getLeft() {
         return left;
@@ -28,7 +28,7 @@ public class Node {
 
 
     //Right child Node
-    Node right;
+    private Node right;
 
     public Node getRight() {
         return right;

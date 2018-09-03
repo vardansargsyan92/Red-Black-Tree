@@ -19,10 +19,16 @@ public class Main {
 
         System.out.println();
         System.out.println();
-        Node res=tree.findNode(7, tree.root);
-        if(res!=null){
-            res.printNodeProperties();
-        }
+
+        tree.rotateRight(tree.root);
+        tree.printTree(tree.root);
+
+//        System.out.println();
+//        System.out.println();
+//        Node res=tree.findNode(7, tree.root);
+//        if(res!=null){
+//            res.printNodeProperties();
+//        }
 
 
     }
