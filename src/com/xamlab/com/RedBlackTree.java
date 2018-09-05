@@ -41,10 +41,15 @@ public class RedBlackTree {
     }
 
     //Right Rotation
-    //We have two cases
+    //We have three cases
     // 1. when we rotate  root node
     // 2. when we  rotate internal node
+    // 3. when the  root is NIL
     public void rotateRight(Node node) {
+
+        //case3
+        if (node == nil) return;
+
         //case 2
         if (node.getParent() != nil) {
             if (node == node.getParent().getLeft()) {
@@ -52,8 +57,14 @@ public class RedBlackTree {
             } else {
                 node.getParent().setRight(node.getLeft());
             }
-            node.getLeft().getParent().setParent(node.getParent());
+            node.getLeft().setParent(node.getParent());
             node.setParent(node.getLeft());
+
+            if (node.getLeft().getRight() != nil) {
+                node.getLeft().getRight().setParent(node);
+            }
+            node.setLeft(node.getLeft().getRight());
+            node.getParent().setRight(node);
         } else
         //case 1
         {
@@ -64,6 +75,49 @@ public class RedBlackTree {
             left.setRight(root);
             left.setParent(nil);
             root = left;
+        }
+    }
+
+    //Left Rotation
+    //We have three cases
+    // 1. when we rotate  root node
+    // 2. when we  rotate internal node
+    // 3. when the  root is NIL
+    public void rotateLeft(Node node) {
+
+        //case 3
+        if (node == nil) return;
+
+        //case2
+        if (node.getParent() != nil) {
+            if (node == node.getParent().getLeft()) {
+                node.getParent().setLeft(node.getRight());
+            } else {
+                node.getParent().setRight(node.getRight());
+            }
+
+            node.getRight().setParent(node.getParent());
+            node.setParent(node.getRight());
+
+
+            if(node.getRight().getLeft()!=nil){
+                node.getRight().getLeft().setParent(node);
+            }
+
+            node.setRight(node.getRight().getLeft());
+            node.getParent().setLeft(node);
+
+        }else
+
+        //case 1
+        {
+            Node right = root.getRight();
+            root.setRight(right.getLeft());
+            right.getLeft().setParent(root);
+            root.setParent(right);
+            right.setLeft(root);
+            right.setParent(nil);
+            root = right;
         }
     }
 

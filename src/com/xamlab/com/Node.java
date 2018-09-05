@@ -5,7 +5,7 @@ import static com.xamlab.com.Constants.*;
 public class Node {
 
     //Key
-    private int key;
+    int key;
 
     public int getKey() {
         return key;
@@ -50,13 +50,13 @@ public class Node {
     }
 
     //Color either black or red
-    private int color;
+    private boolean color;
 
-    public int getColor() {
+    public boolean getColor() {
         return color;
     }
 
-    public void setColor(int color) {
+    public void setColor(boolean color) {
         this.color = color;
     }
 
@@ -69,7 +69,7 @@ public class Node {
         this.color = BLACK;
     }
 
-    public Node(int key, Node left, Node right, Node parent, int color) {
+    public Node(int key, Node left, Node right, Node parent, boolean color) {
         this.key = key;
         this.left = left;
         this.right = right;
@@ -83,7 +83,7 @@ public class Node {
         String left = this.left == nil ? "Left:NIL" : String.format("Left:%s", this.left.key);
         String right = this.right == nil ? "Right:NIL" : String.format("Right:%s", this.right.key);
         String parent = String.format("Parent:%s", this.parent.key);
-        System.out.print(key + " " + color + " " + left + " " + right + " " + parent + "\n");
+        System.out.print(color + " " + key + " " + left + " " + right + " " + parent + "\n");
     }
 
 
