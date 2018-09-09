@@ -1,6 +1,10 @@
 package com.xamlab.com;
 
-import static com.xamlab.com.Constants.*;
+import javax.print.attribute.standard.NumberOfDocuments;
+
+import static com.xamlab.com.Constants.BLACK;
+import static com.xamlab.com.Constants.RED;
+import static com.xamlab.com.Constants.nil;
 
 public class RedBlackTree {
 
@@ -48,23 +52,26 @@ public class RedBlackTree {
     public void rotateRight(Node node) {
 
         //case3
-        if (node == nil) return;
+        if (node.isNil()) return;
 
         //case 2
-        if (node.getParent() != nil) {
+        if (!node.getParent().isNil()) {
             if (node == node.getParent().getLeft()) {
                 node.getParent().setLeft(node.getLeft());
             } else {
                 node.getParent().setRight(node.getLeft());
             }
+
             node.getLeft().setParent(node.getParent());
             node.setParent(node.getLeft());
 
-            if (node.getLeft().getRight() != nil) {
+            if (!node.getLeft().getRight().isNil()) {
                 node.getLeft().getRight().setParent(node);
             }
+
             node.setLeft(node.getLeft().getRight());
             node.getParent().setRight(node);
+
         } else
         //case 1
         {
@@ -100,14 +107,14 @@ public class RedBlackTree {
             node.setParent(node.getRight());
 
 
-            if(node.getRight().getLeft()!=nil){
+            if (node.getRight().getLeft() != nil) {
                 node.getRight().getLeft().setParent(node);
             }
 
             node.setRight(node.getRight().getLeft());
             node.getParent().setLeft(node);
 
-        }else
+        } else
 
         //case 1
         {
@@ -118,6 +125,123 @@ public class RedBlackTree {
             right.setLeft(root);
             right.setParent(nil);
             root = right;
+        }
+    }
+
+    //Insertion into RBTree
+    //After insertion we should balance the tree in order to avoid  violations
+    //We have  two cases
+    //1. insertion into Empty tree
+    //2. ordinary case when RB tree has at least one node
+    // We add node as a red node and  after all we do balancing tree
+    public void insert(Node node) {
+        Node current = root;
+
+        //case 1
+        if (root.isNil()) {
+            root = node;
+            node.setColor(BLACK);
+            node.setParent(nil);
+        }
+        //case 2
+        else {
+            node.setColor(RED);
+            while (true) {
+                if (node.getKey() < current.getKey()) {
+                    if (current.getLeft().isNil()) {
+                        current.setLeft(node);
+                        node.setParent(current);
+                        break;
+                    } else {
+                        current = current.getLeft();
+                    }
+                } else if (node.getKey() >= current.getKey()) {
+                    if (current.getRight().isNil()) {
+                        current.setRight(node);
+                        node.setParent(current);
+                        break;
+                    } else {
+                        current = current.getRight();
+                    }
+                }
+            }
+            balancingAfterInsertion(node);
+        }
+    }
+
+    //Balancing the RB tree after insertion
+    //Takes as argument the newly inserted node
+    //we should balance RB tree while node's parent  color is black
+    //we should observe  uncle color of node's parent and do  left or right rotations
+    //we have 3 cases
+    // 1.color of uncle node is Red (we do recoloring)
+    // 2.color of uncle is Black (we do left/right rotation)
+    // 3.the inserted node,it's parent and grandparent are on the same line (we do recoloring and opposite rotation)
+    //then we cycle the same process  for grandparent of  inserted node if it's parent color is not black
+    private void balancingAfterInsertion(Node node) {
+        while (node.getParent().getColor() == RED) {
+            Node uncle;
+            if (node.getParent() == node.getParent().getParent().getLeft()) {
+                uncle = node.getParent().getParent().getRight();
+
+                //case 1
+                if (!uncle.isNil() && uncle.getColor() == RED) {
+                    node.getParent().setColor(BLACK);
+                    uncle.setColor(BLACK);
+
+                    // we allowed recolor grandparent node if it's not just root
+                    if (node.getParent().getParent() != root) {
+                        node.getParent().getParent().setColor(RED);
+                    }
+
+                    node = node.getParent().getParent();
+                    continue;
+                }
+
+                //case 2
+                if (node == node.getParent().getRight()) {
+                    rotateLeft(node.getParent());
+                    node = node.getLeft();
+                }
+
+                //case3
+                if (node == node.getParent().getLeft()) {
+                    node.getParent().setColor(BLACK);
+                    node.getParent().getParent().setColor(RED);
+                    rotateRight(node.getParent().getParent());
+
+                }
+
+
+            } else if (node.getParent() == node.getParent().getParent().getRight()) {
+                uncle = node.getParent().getParent().getLeft();
+
+                //case1
+                if (!uncle.isNil() && uncle.getColor() == RED) {
+                    node.getParent().setColor(BLACK);
+                    uncle.setColor(BLACK);
+
+                    // we allowed recolor grandparent node if it's not just root
+                    if (node.getParent().getParent() != root) {
+                        node.getParent().getParent().setColor(RED);
+                    }
+                    node = node.getParent().getParent();
+                    continue;
+                }
+
+                //case 2
+                if (node == node.getParent().getLeft()) {
+                    rotateRight(node.getParent());
+                    node = node.getRight();
+                }
+
+                //case 3
+                if (node == node.getParent().getRight()) {
+                    node.getParent().setColor(BLACK);
+                    node.getParent().getParent().setColor(RED);
+                    rotateLeft(node.getParent().getParent());
+                }
+            }
         }
     }
 

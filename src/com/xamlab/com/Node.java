@@ -5,14 +5,10 @@ import static com.xamlab.com.Constants.*;
 public class Node {
 
     //Key
-    int key;
+    private int key;
 
     public int getKey() {
         return key;
-    }
-
-    public void setKey(int key) {
-        this.key = key;
     }
 
     //Left child node
@@ -61,8 +57,16 @@ public class Node {
     }
 
 
+    //NIL Node
     public Node() {
         this.key = -1;
+        this.parent = null;
+        this.left = null;
+        this.right = null;
+    }
+
+    public Node(int key) {
+        this.key = key;
         this.left = nil;
         this.right = nil;
         this.parent = nil;
@@ -78,12 +82,17 @@ public class Node {
     }
 
     public void printNodeProperties() {
+        if (this.isNil()) return;
         String color = this.color == BLACK ? "Color:BLACK" : "Color:RED";
         String key = String.format("Key:%s", this.key);
         String left = this.left == nil ? "Left:NIL" : String.format("Left:%s", this.left.key);
         String right = this.right == nil ? "Right:NIL" : String.format("Right:%s", this.right.key);
-        String parent = String.format("Parent:%s", this.parent.key);
+        String parent = this.parent == nil ? "Parent:NIL" : String.format("Parent:%s", this.parent.key);
         System.out.print(color + " " + key + " " + left + " " + right + " " + parent + "\n");
+    }
+
+    public boolean isNil() {
+        return this.key == -1;
     }
 
 
