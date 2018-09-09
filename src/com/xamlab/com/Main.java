@@ -16,6 +16,8 @@ public class Main {
         tree.insert(new Node(8));*/
 
 
+
+
         tree.insert(new Node(1));
         tree.insert(new Node(2));
         tree.insert(new Node(3));
@@ -26,6 +28,12 @@ public class Main {
         tree.insert(new Node(8));
         tree.insert(new Node(9));
         tree.insert(new Node(10));
+
+        tree.remove(tree.findNode(1,tree.root));
+        tree.remove(tree.findNode(3,tree.root));
+        tree.remove(tree.findNode(5,tree.root));
+        tree.remove(tree.findNode(7,tree.root));
+        tree.remove(tree.findNode(9,tree.root));
 
 
 
