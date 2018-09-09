@@ -28,6 +28,7 @@ public class Main {
         tree.insert(new Node(10));
 
 
+
         System.out.print("|||||||||||||||||||||||||||||||||||||||\n");
         System.out.print("....... TREE STRUCTURE ......... \n");
         tree.printTree(tree.root);
@@ -55,8 +56,6 @@ public class Main {
         printNode(tree.root);
         System.out.println();
         System.out.println();
-
-
 
 
         System.out.print("SCROLL UP");

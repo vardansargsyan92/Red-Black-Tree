@@ -246,4 +246,67 @@ public class RedBlackTree {
     }
 
 
+    //returns true when deleting  is succeed and false vice versa
+    //after deleting node we should do corresponding transplantation and balance the tree
+    public boolean delete(Node node) {
+        if ((node = findNode(node.getKey(), root)) == null) return false;
+        Node x;
+        Node current = node; // temporary reference y
+        boolean y_original_color = current.getColor();
+
+        if (node.getLeft().isNil()) {
+            x = node.getRight();
+            transplantation(node, node.getRight());
+        } else if (node.getRight().isNil()) {
+            x = node.getLeft();
+            transplantation(node, node.getLeft());
+        } else {
+            current = treeMinimum(node.getRight());
+            y_original_color = current.getColor();
+            x = current.getRight();
+            if (current.getParent() == node)
+                x.setParent(current);
+            else {
+                transplantation(current, current.getRight());
+                current.setRight(node.getRight());
+                current.getRight().setParent(current);
+            }
+            transplantation(node, current);
+            current.setLeft(node.getLeft());
+            current.getLeft().setParent(current);
+            current.setColor(node.getColor());
+        }
+        if (y_original_color == BLACK)
+            balancingAfterRemoval(x);
+        return true;
+    }
+
+    private void balancingAfterRemoval(Node node) {
+
+    }
+
+
+    //returns node which have a minimum key
+    Node treeMinimum(Node subTreeRoot) {
+        while (!subTreeRoot.getLeft().isNil()) {
+            subTreeRoot = subTreeRoot.getLeft();
+        }
+        return subTreeRoot;
+    }
+
+    //This operation we will use in DELETING method
+    //This operation doesn't care about the new Node's connections
+    //with previous node's left and right. The caller has to take care
+    //of that.
+    private void transplantation(Node target, Node with) {
+        if (target.getParent().isNil()) {
+            root = with;
+        } else if (target == target.getParent().getLeft()) {
+            target.getParent().setLeft(with);
+        } else
+            target.getParent().setRight(with);
+        with.setParent(target.getParent());
+    }
+
+
 }
