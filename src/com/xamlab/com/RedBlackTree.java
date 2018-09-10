@@ -292,66 +292,74 @@ public class RedBlackTree {
     //our goal is to make sibling's far child as a red, so we do recoloring and rotation to achieve that
     //4. node's sibling is black, sibling’s left child is black, and sibling's right child is red
     //we do recolor; make rotation to remove the deficiency of black nodes color
-    private void balancingAfterRemoval(Node node) {
-        while (node != root && node.getColor() == BLACK) {
-            if (node == node.getParent().getLeft()) {
-                Node sibling = node.getParent().getRight();
+    private void balancingAfterRemoval(Node x) {
+        while (x != root && x.getColor() == BLACK) {
+            if (x == x.getParent().getLeft()) {
+                Node w = x.getParent().getRight();
+
+                //case 1
+                if (w.getColor() == RED) {
+                    w.setColor(BLACK);
+                    x.getParent().setColor(RED);
+                    rotateLeft(x.getParent());
+                    w = x.getParent().getRight();
+                }
+                //case 2
+                if (w.getLeft().getColor() == BLACK && w.getRight().getColor() == BLACK) {
+                    w.setColor(RED);
+                    x = x.getParent();
+                } else if
+
+                    //case 3
+                (w.getRight().getColor() == BLACK) {
+                    w.getLeft().setColor(BLACK);
+                    w.setColor(RED);
+                    rotateRight(w);
+                    w = x.getParent().getRight();
+                }
+
+                //case 4
+                if (w.getRight().getColor() == RED) {
+                    w.setColor(x.getParent().getColor());
+                    x.getParent().setColor(BLACK);
+                    w.getRight().setColor(BLACK);
+                    rotateLeft(x.getParent());
+                    x = root;
+                }
+            } else {
+                Node sibling = x.getParent().getLeft();
 
                 //case 1
                 if (sibling.getColor() == RED) {
                     sibling.setColor(BLACK);
-                    node.getParent().setColor(RED);
-                    int a = node.getParent().getRight().getKey();
-                    rotateLeft(node.getParent());
-                    int b = node.getParent().getRight().getKey();
-                    sibling = node.getParent().getRight();
+                    x.getParent().setColor(RED);
+                    rotateRight(x.getParent());
+                    sibling = x.getParent().getLeft();
                 }
-                if (sibling.getLeft().getColor() == BLACK && sibling.getRight().getColor() == BLACK) {
-                    sibling.setColor(RED);
-                    node = node.getParent();
-                    continue;
-                } else if (sibling.getRight().getColor() == BLACK) {
-                    sibling.getLeft().setColor(BLACK);
-                    sibling.setColor(RED);
-                    rotateRight(sibling);
-                    //????
-                    sibling = node.getParent().getRight();
-                }
-                if (sibling.getRight().getColor() == RED) {
-                    sibling.setColor(node.getParent().getColor());
-                    node.getParent().setColor(BLACK);
-                    sibling.getRight().setColor(BLACK);
-                    rotateLeft(node.getParent());
-                    node = root;
-                }
-            } else {
-                Node sibling = node.getParent().getLeft();
-                if (sibling.getColor() == RED) {
-                    sibling.setColor(BLACK);
-                    node.getParent().setColor(RED);
-                    rotateRight(node.getParent());
-                    sibling = node.getParent().getLeft();
-                }
+                //case 2
                 if (sibling.getRight().getColor() == BLACK && sibling.getLeft().getColor() == BLACK) {
                     sibling.setColor(RED);
-                    node = node.getParent();
-                    continue;
-                } else if (sibling.getLeft().getColor() == BLACK) {
+                    x = x.getParent();
+
+                }
+                //case 3
+                else if (sibling.getLeft().getColor() == BLACK) {
                     sibling.getRight().setColor(BLACK);
                     sibling.setColor(RED);
                     rotateLeft(sibling);
-                    sibling = node.getParent().getLeft();
+                    sibling = x.getParent().getLeft();
                 }
+                //case 4
                 if (sibling.getLeft().getColor() == RED) {
-                    sibling.setColor(node.getParent().getColor());
-                    node.getParent().setColor(BLACK);
+                    sibling.setColor(x.getParent().getColor());
+                    x.getParent().setColor(BLACK);
                     sibling.getLeft().setColor(BLACK);
-                    rotateRight(node.getParent());
-                    node = root;
+                    rotateRight(x.getParent());
+                    x = root;
                 }
             }
         }
-        node.setColor(BLACK);
+        x.setColor(BLACK);
     }
 
 
